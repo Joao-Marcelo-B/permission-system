@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
 using PermissionSystem.Application.Data.Entities;
 
 namespace PermissionSystem.Application.Data;
@@ -16,8 +17,13 @@ public class PermissionSystemContext : DbContext
     public DbSet<GroupUser> GroupUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseMySql("server=localhost;port=3306;database=PermissionSystem;user=root;password=root;",
-                            ServerVersion.AutoDetect("server=localhost;port=3306;database=PermissionSystem;user=root;password=root;"));
+    {
+        Env.Load();
+
+        var connectionString = ConnectionStringBuilder.BuildMySqlConnectionString();
+
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

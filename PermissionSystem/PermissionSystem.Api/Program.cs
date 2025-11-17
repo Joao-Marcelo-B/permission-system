@@ -1,10 +1,13 @@
+using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using PermissionSystem.Application.Data;
 using PermissionSystem.Application.DependencyInjections;
 
+Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("ConnPermissionSystem");
+var connectionString = ConnectionStringBuilder.BuildMySqlConnectionString();
 
 builder.Services.AddDbContext<PermissionSystemContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))

@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace PermissionSystem.Application.Data.Entities;
+﻿namespace PermissionSystem.Application.Data.Entities;
 
 public class SystemEntity
 {
