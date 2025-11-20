@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PermissionSystem.Application.Data;
 using PermissionSystem.Application.DependencyInjections;
 
-Env.Load();
+Env.Load("../.env");
 
 var builder = WebApplication.CreateBuilder(args);
 

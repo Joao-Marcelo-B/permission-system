@@ -8,8 +8,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Permission
 {
     public PermissionSystemContext CreateDbContext(string[] args)
     {
-        Env.Load();
-
         var connectionString = ConnectionStringBuilder.BuildMySqlConnectionString();
 
         var optionsBuilder = new DbContextOptionsBuilder<PermissionSystemContext>();

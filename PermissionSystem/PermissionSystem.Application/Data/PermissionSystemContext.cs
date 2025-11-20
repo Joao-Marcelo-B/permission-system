@@ -18,8 +18,6 @@ public class PermissionSystemContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        Env.Load();
-
         var connectionString = ConnectionStringBuilder.BuildMySqlConnectionString();
 
         options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
