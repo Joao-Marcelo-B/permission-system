@@ -43,7 +43,7 @@ public class GroupService
         var group = new Group
         {
             Description = dto.Description,
-            SystemId = dto.SystemId,
+            SystemId = dto.SystemId.GetValueOrDefault(),
         };
 
         _context.Groups.Add(group);
@@ -65,7 +65,7 @@ public class GroupService
             return false;
 
         group.Description = dto.Description;
-        group.SystemId = dto.SystemId;
+        group.SystemId = dto.SystemId.GetValueOrDefault();
 
         await _context.SaveChangesAsync();
         return true;

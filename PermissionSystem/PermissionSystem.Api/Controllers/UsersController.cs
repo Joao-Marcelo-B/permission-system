@@ -15,10 +15,22 @@ public class UsersController : ControllerBase
         _userServices = userServices;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> PostCreateUser([FromBody] UserDTO user)
+    [HttpGet]
+    public async Task<IActionResult> GetUsers()
     {
-        var result = await _userServices.CreateUser(user);
+        var users = await _userServices.GetAllUsers();
+        if (users == null || users.Count() <= 0)
+            return NotFound();
+
+        return Ok(users);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PostCreateUser([FromBody] UserDTO userDto)
+    {
+        var user = await _userServices.CreateUser(userDto);
+        if (user == null)
+            return BadRequest(new { Message = "Não foi possível criar um novo usuário." });
 
         return Created("", null);
     }

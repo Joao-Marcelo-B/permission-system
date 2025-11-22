@@ -8,6 +8,11 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<UserDTO, User>().ReverseMap();
+        CreateMap<User, UserDTO>()
+        .ForMember(dest => dest.Groups,
+            opt => opt.MapFrom(src => src.GroupUsers.Select(gu => gu.Group))).ReverseMap();
+
+        CreateMap<SystemEntity, SystemDTO>().ReverseMap();
+        CreateMap<Group, GroupDTO>().ReverseMap();
     }
 }
