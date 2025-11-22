@@ -1,7 +1,18 @@
-﻿namespace PermissionSystem.Application.DTOs;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class SystemDTO
+using System.ComponentModel.DataAnnotations;
+
+namespace PermissionSystem.Application.DTOs
 {
-    public int Id { get; set; }
-    public string? Description { get; set; }
+    public class SystemDTO
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "A descrição do sistema é obrigatória.")]
+        public string Description { get; set; } = string.Empty;
+    }
 }
