@@ -7,236 +7,235 @@ using PermissionSystem.Application.Data;
 
 #nullable disable
 
-namespace PermissionSystem.Application.Migrations
+namespace PermissionSystem.Application.Migrations;
+
+[DbContext(typeof(PermissionSystemContext))]
+partial class PermissionSystemContextModelSnapshot : ModelSnapshot
 {
-    [DbContext(typeof(PermissionSystemContext))]
-    partial class PermissionSystemContextModelSnapshot : ModelSnapshot
+    protected override void BuildModel(ModelBuilder modelBuilder)
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.22")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+        modelBuilder
+            .HasAnnotation("ProductVersion", "8.0.22")
+            .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+        MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Group", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<int>("SystemId")
-                        .HasColumnType("int");
+                b.Property<int>("SystemId")
+                    .HasColumnType("int");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("SystemId");
+                b.HasIndex("SystemId");
 
-                    b.ToTable("Groups");
-                });
+                b.ToTable("Groups");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.GroupUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.GroupUser", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
+                b.Property<int>("GroupId")
+                    .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                b.Property<int>("UserId")
+                    .HasColumnType("int");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                b.HasIndex("GroupId");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("GroupUsers");
-                });
+                b.ToTable("GroupUsers");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Permission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Permission", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Permissions");
-                });
+                b.ToTable("Permissions");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.PermissionGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.PermissionGroup", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
+                b.Property<int>("GroupId")
+                    .HasColumnType("int");
 
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                b.Property<int>("PermissionId")
+                    .HasColumnType("int");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                b.HasIndex("GroupId");
 
-                    b.HasIndex("PermissionId");
+                b.HasIndex("PermissionId");
 
-                    b.ToTable("PermissionGroups");
-                });
+                b.ToTable("PermissionGroups");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.SystemEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.SystemEntity", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("System", (string)null);
-                });
+                b.ToTable("System", (string)null);
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.User", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Email")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Password")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<int>("SystemId")
-                        .HasColumnType("int");
+                b.Property<int>("SystemId")
+                    .HasColumnType("int");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("SystemId");
+                b.HasIndex("SystemId");
 
-                    b.ToTable("Users");
-                });
+                b.ToTable("Users");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Group", b =>
-                {
-                    b.HasOne("PermissionSystem.Application.Data.Entities.SystemEntity", "System")
-                        .WithMany("Groups")
-                        .HasForeignKey("SystemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Group", b =>
+            {
+                b.HasOne("PermissionSystem.Application.Data.Entities.SystemEntity", "System")
+                    .WithMany("Groups")
+                    .HasForeignKey("SystemId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("System");
-                });
+                b.Navigation("System");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.GroupUser", b =>
-                {
-                    b.HasOne("PermissionSystem.Application.Data.Entities.Group", "Group")
-                        .WithMany("GroupUsers")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.GroupUser", b =>
+            {
+                b.HasOne("PermissionSystem.Application.Data.Entities.Group", "Group")
+                    .WithMany("GroupUsers")
+                    .HasForeignKey("GroupId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("PermissionSystem.Application.Data.Entities.User", "User")
-                        .WithMany("GroupUsers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("PermissionSystem.Application.Data.Entities.User", "User")
+                    .WithMany("GroupUsers")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Group");
+                b.Navigation("Group");
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.PermissionGroup", b =>
-                {
-                    b.HasOne("PermissionSystem.Application.Data.Entities.Group", "Group")
-                        .WithMany("PermissionGroups")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.PermissionGroup", b =>
+            {
+                b.HasOne("PermissionSystem.Application.Data.Entities.Group", "Group")
+                    .WithMany("PermissionGroups")
+                    .HasForeignKey("GroupId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("PermissionSystem.Application.Data.Entities.Permission", "Permission")
-                        .WithMany("PermissionGroups")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("PermissionSystem.Application.Data.Entities.Permission", "Permission")
+                    .WithMany("PermissionGroups")
+                    .HasForeignKey("PermissionId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Group");
+                b.Navigation("Group");
 
-                    b.Navigation("Permission");
-                });
+                b.Navigation("Permission");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.User", b =>
-                {
-                    b.HasOne("PermissionSystem.Application.Data.Entities.SystemEntity", "System")
-                        .WithMany("Users")
-                        .HasForeignKey("SystemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.User", b =>
+            {
+                b.HasOne("PermissionSystem.Application.Data.Entities.SystemEntity", "System")
+                    .WithMany("Users")
+                    .HasForeignKey("SystemId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("System");
-                });
+                b.Navigation("System");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Group", b =>
-                {
-                    b.Navigation("GroupUsers");
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Group", b =>
+            {
+                b.Navigation("GroupUsers");
 
-                    b.Navigation("PermissionGroups");
-                });
+                b.Navigation("PermissionGroups");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Permission", b =>
-                {
-                    b.Navigation("PermissionGroups");
-                });
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.Permission", b =>
+            {
+                b.Navigation("PermissionGroups");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.SystemEntity", b =>
-                {
-                    b.Navigation("Groups");
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.SystemEntity", b =>
+            {
+                b.Navigation("Groups");
 
-                    b.Navigation("Users");
-                });
+                b.Navigation("Users");
+            });
 
-            modelBuilder.Entity("PermissionSystem.Application.Data.Entities.User", b =>
-                {
-                    b.Navigation("GroupUsers");
-                });
+        modelBuilder.Entity("PermissionSystem.Application.Data.Entities.User", b =>
+            {
+                b.Navigation("GroupUsers");
+            });
 #pragma warning restore 612, 618
-        }
     }
 }

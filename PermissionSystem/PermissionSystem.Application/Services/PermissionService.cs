@@ -2,86 +2,80 @@
 using PermissionSystem.Application.Data;
 using PermissionSystem.Application.Data.Entities;
 using PermissionSystem.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PermissionSystem.Application.Services
+namespace PermissionSystem.Application.Services;
+
+public class PermissionService
 {
-    public class PermissionService
+    private readonly PermissionSystemContext _context;
+
+    public PermissionService(PermissionSystemContext context)
     {
-        private readonly PermissionSystemContext _context;
+        _context = context;
+    }
 
-        public PermissionService(PermissionSystemContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<List<PermissionDTO>> GetAllAsync()
-        {
-            return await _context.Permissions
-                .Select(x => new PermissionDTO
-                {
-                    Id = x.Id,
-                    Description = x.Description
-                })
-                .ToListAsync();
-        }
-
-        public async Task<PermissionDTO?> GetByIdAsync(int id)
-        {
-            return await _context.Permissions
-                .Where(x => x.Id == id)
-                .Select(x => new PermissionDTO
-                {
-                    Id = x.Id,
-                    Description = x.Description
-                })
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task<PermissionDTO> CreateAsync(PermissionDTO dto)
-        {
-            var permission = new Permission
+    public async Task<List<PermissionDTO>> GetAllAsync()
+    {
+        return await _context.Permissions
+            .Select(x => new PermissionDTO
             {
-                Description = dto.Description
-            };
+                Id = x.Id,
+                Description = x.Description
+            })
+            .ToListAsync();
+    }
 
-            _context.Permissions.Add(permission);
-            await _context.SaveChangesAsync();
-
-            return new PermissionDTO
+    public async Task<PermissionDTO?> GetByIdAsync(int id)
+    {
+        return await _context.Permissions
+            .Where(x => x.Id == id)
+            .Select(x => new PermissionDTO
             {
-                Id = permission.Id,         
-                Description = permission.Description
-            };
-        }
+                Id = x.Id,
+                Description = x.Description
+            })
+            .FirstOrDefaultAsync();
+    }
 
-        public async Task<bool> UpdateAsync(PermissionDTO dto)
+    public async Task<PermissionDTO> CreateAsync(PermissionDTO dto)
+    {
+        var permission = new Permission
         {
-            var permission = await _context.Permissions.FindAsync(dto.Id);
+            Description = dto.Description
+        };
 
-            if (permission == null)
-                return false;
+        _context.Permissions.Add(permission);
+        await _context.SaveChangesAsync();
 
-            permission.Description = dto.Description;
-
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
+        return new PermissionDTO
         {
-            var permission = await _context.Permissions.FindAsync(id);
-            if (permission == null)
-                return false;
+            Id = permission.Id,         
+            Description = permission.Description
+        };
+    }
 
-            _context.Permissions.Remove(permission);
-            await _context.SaveChangesAsync();
+    public async Task<bool> UpdateAsync(PermissionDTO dto)
+    {
+        var permission = await _context.Permissions.FindAsync(dto.Id);
 
-            return true;
-        }
+        if (permission == null)
+            return false;
+
+        permission.Description = dto.Description;
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var permission = await _context.Permissions.FindAsync(id);
+        if (permission == null)
+            return false;
+
+        _context.Permissions.Remove(permission);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }
