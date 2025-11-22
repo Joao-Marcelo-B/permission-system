@@ -2,6 +2,7 @@ using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using PermissionSystem.Application.Data;
 using PermissionSystem.Application.DependencyInjections;
+using PermissionSystem.Application.Services;
 
 Env.Load("../.env");
 
@@ -14,6 +15,11 @@ builder.Services.AddDbContext<PermissionSystemContext>(options =>
 );
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<PermissionService>();
+builder.Services.AddScoped<GroupService>();
+builder.Services.AddScoped<PermissionGroupService>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDocumentation();
