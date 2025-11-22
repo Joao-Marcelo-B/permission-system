@@ -12,13 +12,13 @@ public static class ConnectionStringBuilder
         string database = Environment.GetEnvironmentVariable("DB_DATABASE") ?? "PermissionSystemDb";
         string user = Environment.GetEnvironmentVariable("DB_USER") ?? "usuario";
         string password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "senha";
-
+        string options = Environment.GetEnvironmentVariable("DB_OPTIONS") ?? "";
         return $"server={host};" +
                $"port={port};" +
                $"database={database};" +
                $"user={user};" +
                $"password={password};" +
                $"CharSet=utf8mb4;" +
-               $"SslMode=None;";
+               $"{options}";
     }
 }
