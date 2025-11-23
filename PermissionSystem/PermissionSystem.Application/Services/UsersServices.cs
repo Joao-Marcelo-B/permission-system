@@ -46,6 +46,24 @@ public class UsersServices
         return _mapper.Map<UserDTO>(entity);
     }
 
+    public async Task<bool> DeleteUser(int id)
+    {
+        var user = await _context.Users
+            .Include(u => u.GroupUsers)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (user == null || user.GroupUsers == null)
+            return false;
+
+        user.GroupUsers.Clear();
+
+        _context.Users.Remove(user);
+
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
     public async Task<IEnumerable<UserDTO>> GetAllUsers()
     {
         var users = await _context.Users
@@ -70,4 +88,38 @@ public class UsersServices
 
         return _mapper.Map<UserDTO>(user);
     }
+
+    public async Task<UserDTO?> UpdateUser(int userId, UserUpdateDTO dto)
+    {
+        var user = await _context.Users
+            .Include(u => u.GroupUsers)
+            .FirstOrDefaultAsync(u => u.Id.Equals(userId));
+
+        if (user == null)
+            return null;
+
+        user.Name = dto.Name!;
+        user.Email = dto.Email!;
+
+        if (dto.SystemId != null)
+            user.SystemId = dto.SystemId.Value;
+
+        if (!string.IsNullOrEmpty(dto.Password))
+            user.Password = dto.Password;
+
+        if (dto.GroupIds != null)
+        {
+            user.GroupUsers!.Clear();
+
+            foreach (var groupId in dto.GroupIds)
+            {
+                user.GroupUsers.Add(new GroupUser { GroupId = groupId, UserId = user.Id });
+            }
+        }
+
+        await _context.SaveChangesAsync();
+
+        return _mapper.Map<UserDTO>(user);
+    }
+
 }

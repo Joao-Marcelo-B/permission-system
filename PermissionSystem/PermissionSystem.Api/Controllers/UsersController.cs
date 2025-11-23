@@ -50,4 +50,31 @@ public class UsersController : ControllerBase
 
         return Created("", null);
     }
+
+    [HttpPut("{userId}")]
+    public async Task<IActionResult> PutUser([FromRoute] int? userId, [FromBody] UserUpdateDTO userUpdateDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        if (userId == null || userId <= 0)
+            return NotFound();
+
+        var user = await _userServices.UpdateUser(userId.Value, userUpdateDto);
+        if (user == null)
+            return BadRequest(new { Message = "Não foi possível atualizar o usuário." });
+
+        return NoContent();
+    }
+
+    [HttpDelete("{userId}")]
+    public async Task<IActionResult> DeleteUser([FromRoute] int userId)
+    {
+        var result = await _userServices.DeleteUser(userId);
+
+        if (!result)
+            return NotFound("Usuário não encontrado.");
+
+        return NoContent();
+    }
 }
