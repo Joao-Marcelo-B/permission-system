@@ -6,8 +6,7 @@ public class User
     public required string Name { get; set; }
     public required string Email { get; set; }
     public required string Password { get; set; }
-
-    public int SystemId { get; set; }
+    public required int SystemId { get; set; }
     public SystemEntity? System { get; set; }
     public ICollection<GroupUser>? GroupUsers { get; set; }
 }

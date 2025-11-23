@@ -17,45 +17,57 @@ public class UsersServices
         _mapper = mapper;
     }
 
-    public async Task<UserDTO?> CreateUser(UserDTO user)
+    public async Task<UserDTO?> CreateUser(UserCreateDTO userCreateDto)
     {
-        if (await _context.Users.AnyAsync(u => u.Email == user.Email))
+        if (await _context.Users.AnyAsync(u => u.Email == userCreateDto.Email))
             return null;
 
-        if (!await _context.Groups.AnyAsync(x => user.Groups.Select(x => x.Id).Contains(x.Id)))
+        if (!await _context.Groups.AnyAsync(x => userCreateDto.GroupIds!.Contains(x.Id)))
             return null;
 
-        User entity = _mapper.Map<User>(user);
+        User entity = _mapper.Map<User>(userCreateDto);
 
         entity.System = null;
         entity.GroupUsers = null;
         _context.Users.Add(entity);
         await _context.SaveChangesAsync();
 
-        foreach (var group in user.Groups!)
+        foreach (var groupId in userCreateDto.GroupIds!)
         {
             GroupUser groupUser = new()
             {
-                GroupId = group.Id,
+                GroupId = groupId,
                 UserId = entity.Id
             };
             _context.GroupUsers.Add(groupUser);
             await _context.SaveChangesAsync();
         }
 
-        return user;
+        return _mapper.Map<UserDTO>(entity);
     }
 
     public async Task<IEnumerable<UserDTO>> GetAllUsers()
     {
         var users = await _context.Users
-        .Include(u => u.System)
-        .Include(u => u.GroupUsers)
-            .ThenInclude(gu => gu.Group)
-        .ToListAsync();
+            .Include(u => u.System)
+            .Include(u => u.GroupUsers!)
+                .ThenInclude(gu => gu.Group)
+            .ToListAsync();
 
-        var usersDto = _mapper.Map<IEnumerable<UserDTO>>(users);
+        return _mapper.Map<IEnumerable<UserDTO>>(users);
+    }
 
-        return usersDto;
+    public async Task<UserDTO?> GetUserById(int userId)
+    {
+        var user = await _context.Users
+            .Include(u => u.System)
+            .Include(u => u.GroupUsers!)
+                .ThenInclude(gu => gu.Group)
+            .FirstOrDefaultAsync(x => x.Id.Equals(userId));
+
+        if (user == null)
+            return null;
+
+        return _mapper.Map<UserDTO>(user);
     }
 }
