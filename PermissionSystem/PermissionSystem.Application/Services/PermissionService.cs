@@ -83,5 +83,47 @@ namespace PermissionSystem.Application.Services
 
             return true;
         }
+
+        public async Task<List<Permission>> GetPermissionsByUserIdAsync(int userId)
+        {
+            List<Permission> permissionsByUser = new List<Permission>();
+
+            var groupsUser = await _context.GroupUsers.Where(gu => gu.UserId == userId).ToListAsync();
+
+            if (groupsUser.Count <= 0)
+            {
+                return permissionsByUser;
+            }
+
+            var groups = await _context.Groups.ToListAsync();
+            var validGroups = new List<Group>();
+
+            foreach (var item in groupsUser)
+            {
+                foreach (var group in groups)
+                {
+                    if (item.GroupId == group.Id)
+                    {
+                        validGroups.Add(group);
+                    }
+                } 
+            }
+
+            var permissions = await _context.Permissions.ToListAsync();
+            var permissionGroups = await _context.PermissionGroups.ToListAsync();
+
+            foreach (var item in permissions)
+            {
+                foreach (var permissionGroup in permissionGroups)
+                {
+                    if (item.Id == permissionGroup.PermissionId)
+                    {
+                        permissionsByUser.Add(item);
+                    }
+                }
+            }
+
+            return permissionsByUser;
+        }
     }
 }

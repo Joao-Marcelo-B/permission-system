@@ -58,5 +58,13 @@ namespace PermissionSystem.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("/permissions-by-user/{id}")]
+        public async Task<IActionResult> GetPermissionsByUserId(int id)
+        {
+            var permissions = await _service.GetPermissionsByUserIdAsync(id);
+            return Ok(permissions);
+        }
+
     }
 }
