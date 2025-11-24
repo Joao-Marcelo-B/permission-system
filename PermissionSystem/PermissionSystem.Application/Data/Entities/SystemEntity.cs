@@ -18,5 +18,5 @@ public class SystemEntity
         public ICollection<User>? Users { get; set; } = new List<User>();
         [JsonIgnore]
         public ICollection<Group>? Groups { get; set; } = new List<Group>();
-    }
+    
 }
