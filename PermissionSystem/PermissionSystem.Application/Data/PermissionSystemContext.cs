@@ -1,5 +1,4 @@
-﻿using DotNetEnv;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PermissionSystem.Application.Data.Entities;
 
 namespace PermissionSystem.Application.Data;

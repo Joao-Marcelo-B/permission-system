@@ -1,16 +1,7 @@
-﻿using PermissionSystem.Application.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace PermissionSystem.Application.DTOs;
 
-namespace PermissionSystem.Application.DTOs
+public class PermissionDTO
 {
-    public class PermissionDTO
-    {
-        public int Id { get; set; }
-        public required string Description { get; set; }
-    }
-
+    public int Id { get; set; }
+    public required string Description { get; set; }
 }

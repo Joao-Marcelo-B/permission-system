@@ -2,90 +2,84 @@
 using PermissionSystem.Application.Data;
 using PermissionSystem.Application.Data.Entities;
 using PermissionSystem.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PermissionSystem.Application.Services
+namespace PermissionSystem.Application.Services;
+
+public class GroupService
 {
-    public class GroupService
+    private readonly PermissionSystemContext _context;
+
+    public GroupService(PermissionSystemContext context)
     {
-        private readonly PermissionSystemContext _context;
+        _context = context;
+    }
 
-        public GroupService(PermissionSystemContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<List<GroupDTO>> GetAllAsync()
-        {
-            return await _context.Groups
-                .Select(x => new GroupDTO
-                {
-                    Id = x.Id,
-                    Description = x.Description,
-                    SystemId = x.SystemId
-                })
-                .ToListAsync();
-        }
-
-        public async Task<GroupDTO?> GetByIdAsync(int id)
-        {
-            return await _context.Groups
-                .Where(x => x.Id == id)
-                .Select(x => new GroupDTO
-                {
-                    Id = x.Id,
-                    Description = x.Description,
-                    SystemId = x.SystemId
-                }).FirstOrDefaultAsync();
-        }
-
-        public async Task<GroupDTO> CreateAsync(GroupDTO dto)
-        {
-            var group = new Group
+    public async Task<List<GroupDTO>> GetAllAsync()
+    {
+        return await _context.Groups
+            .Select(x => new GroupDTO
             {
-                Description = dto.Description,
-                SystemId = dto.SystemId,
-            };
+                Id = x.Id,
+                Description = x.Description,
+                SystemId = x.SystemId
+            })
+            .ToListAsync();
+    }
 
-            _context.Groups.Add(group);
-            await _context.SaveChangesAsync();
-
-            return new GroupDTO
+    public async Task<GroupDTO?> GetByIdAsync(int id)
+    {
+        return await _context.Groups
+            .Where(x => x.Id == id)
+            .Select(x => new GroupDTO
             {
-                Id = group.Id,
-                Description = group.Description,
-                SystemId = group.SystemId
-            };
-        }
+                Id = x.Id,
+                Description = x.Description,
+                SystemId = x.SystemId
+            }).FirstOrDefaultAsync();
+    }
 
-        public async Task<bool> UpdateAsync(GroupDTO dto)
+    public async Task<GroupDTO> CreateAsync(GroupDTO dto)
+    {
+        var group = new Group
         {
-            var group = await _context.Groups.FindAsync(dto.Id);
+            Description = dto.Description,
+            SystemId = dto.SystemId.GetValueOrDefault(),
+        };
 
-            if (group == null)
-                return false;
+        _context.Groups.Add(group);
+        await _context.SaveChangesAsync();
 
-            group.Description = dto.Description;
-            group.SystemId = dto.SystemId;
-
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
+        return new GroupDTO
         {
-            var group = await _context.Groups.FindAsync(id);
-            if (group == null)
-                return false;
+            Id = group.Id,
+            Description = group.Description,
+            SystemId = group.SystemId
+        };
+    }
 
-            _context.Groups.Remove(group);
-            await _context.SaveChangesAsync();
+    public async Task<bool> UpdateAsync(GroupDTO dto)
+    {
+        var group = await _context.Groups.FindAsync(dto.Id);
 
-            return true;
-        }
+        if (group == null)
+            return false;
+
+        group.Description = dto.Description;
+        group.SystemId = dto.SystemId.GetValueOrDefault();
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var group = await _context.Groups.FindAsync(id);
+        if (group == null)
+            return false;
+
+        _context.Groups.Remove(group);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }

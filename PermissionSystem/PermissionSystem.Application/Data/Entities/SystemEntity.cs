@@ -1,11 +1,20 @@
-﻿namespace PermissionSystem.Application.Data.Entities;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class SystemEntity
+namespace PermissionSystem.Application.Data.Entities
 {
-    public int Id { get; set; }
-    public string Description { get; set; }
+    [Table("System")]
+    public class SystemEntity
+    {
+        [Key]
+        public int Id { get; set; }
 
-   
-    public ICollection<User> Users { get; set; }
-    public ICollection<Group> Groups { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public string Description { get; set; } = string.Empty;
+
+        public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<Group> Groups { get; set; } = new List<Group>();
+    }
 }

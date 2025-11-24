@@ -2,6 +2,7 @@ using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using PermissionSystem.Application.Data;
 using PermissionSystem.Application.DependencyInjections;
+using PermissionSystem.Application.Profiles;
 using PermissionSystem.Application.Services;
 
 Env.Load("../.env");
@@ -16,6 +17,9 @@ builder.Services.AddDbContext<PermissionSystemContext>(options =>
 
 builder.Services.AddControllers();
 
+builder.Services.AddAutoMapper(cfg => { }, typeof(UserProfile));
+
+builder.Services.AddScoped<UsersServices>();
 builder.Services.AddScoped<PermissionService>();
 builder.Services.AddScoped<GroupService>();
 builder.Services.AddScoped<PermissionGroupService>();

@@ -6,11 +6,11 @@ namespace PermissionSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class GroupsController : ControllerBase
+public class SystemController : ControllerBase
 {
-    private readonly GroupService _service;
+    private readonly SystemService _service;
 
-    public GroupsController(GroupService service)
+    public SystemController(SystemService service)
     {
         _service = service;
     }
@@ -24,28 +24,30 @@ public class GroupsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var permission = await _service.GetByIdAsync(id);
-        if (permission == null)
-            return NotFound("Grupo não encontrado.");
+        var system = await _service.GetByIdAsync(id);
+        if (system == null)
+            return NotFound("Sistema não encontrado.");
 
-        return Ok(permission);
+        return Ok(system);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(GroupDTO dto)
+    public async Task<IActionResult> Create(SystemDTO dto)
     {
         var created = await _service.CreateAsync(dto);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(GroupDTO dto)
+    public async Task<IActionResult> Update(int id, SystemDTO dto)
     {
+        dto.Id = id; // garantir que o id do DTO será o do caminho
+
         var updated = await _service.UpdateAsync(dto);
         if (!updated)
-            return NotFound("Grupo não encontrado.");
+            return NotFound("Sistema não encontrado.");
 
-        return Ok("Grupo atualizado!");
+        return Ok("Sistema atualizado!");
     }
 
     [HttpDelete("{id}")]
@@ -53,7 +55,7 @@ public class GroupsController : ControllerBase
     {
         var deleted = await _service.DeleteAsync(id);
         if (!deleted)
-            return NotFound("Grupo não encontrado.");
+            return NotFound("Sistema não encontrado.");
 
         return NoContent();
     }
