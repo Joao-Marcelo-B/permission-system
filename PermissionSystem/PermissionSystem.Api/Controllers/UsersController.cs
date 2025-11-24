@@ -25,13 +25,56 @@ public class UsersController : ControllerBase
         return Ok(users);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> PostCreateUser([FromBody] UserDTO userDto)
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetUserById([FromRoute] int? userId)
     {
-        var user = await _userServices.CreateUser(userDto);
+        if (userId == null || userId <= 0)
+            return NotFound();
+
+        var user = await _userServices.GetUserById(userId.Value);
+        if (user == null)
+            return NotFound();
+
+        return Ok(user);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PostCreateUser([FromBody] UserCreateDTO userCreateDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var user = await _userServices.CreateUser(userCreateDto);
         if (user == null)
             return BadRequest(new { Message = "Não foi possível criar um novo usuário." });
 
         return Created("", null);
+    }
+
+    [HttpPut("{userId}")]
+    public async Task<IActionResult> PutUser([FromRoute] int? userId, [FromBody] UserUpdateDTO userUpdateDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        if (userId == null || userId <= 0)
+            return NotFound();
+
+        var user = await _userServices.UpdateUser(userId.Value, userUpdateDto);
+        if (user == null)
+            return BadRequest(new { Message = "Não foi possível atualizar o usuário." });
+
+        return NoContent();
+    }
+
+    [HttpDelete("{userId}")]
+    public async Task<IActionResult> DeleteUser([FromRoute] int userId)
+    {
+        var result = await _userServices.DeleteUser(userId);
+
+        if (!result)
+            return NotFound("Usuário não encontrado.");
+
+        return NoContent();
     }
 }

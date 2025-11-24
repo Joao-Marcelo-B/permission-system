@@ -5,7 +5,7 @@ namespace PermissionSystem.Application.Data.Entities;
 public class Group
 {
     public int Id { get; set; }
-    public string Description { get; set; }
+    public required string Description { get; set; }
 
     public int SystemId { get; set; }
     [JsonIgnore]

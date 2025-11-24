@@ -8,5 +8,5 @@ public class Permission
     public string Description { get; set; }
     [JsonIgnore]
 
-    public ICollection<PermissionGroup> PermissionGroups { get; set; }
+    public ICollection<PermissionGroup>? PermissionGroups { get; set; }
 }

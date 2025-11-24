@@ -1,88 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PermissionSystem.Application.Data;
 using PermissionSystem.Application.Data.Entities;
 using PermissionSystem.Application.DTOs;
 
-namespace PermissionSystem.Application.Services
+namespace PermissionSystem.Application.Services;
+
+public class SystemService
 {
-    public class SystemService
+    private readonly PermissionSystemContext _context;
+
+    public SystemService(PermissionSystemContext context)
     {
-        private readonly PermissionSystemContext _context;
+        _context = context;
+    }
 
-        public SystemService(PermissionSystemContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<List<SystemDTO>> GetAllAsync()
-        {
-            return await _context.Systems
-                .Select(x => new SystemDTO
-                {
-                    Id = x.Id,
-                    Description = x.Description
-                })
-                .ToListAsync();
-        }
-
-        public async Task<SystemDTO?> GetByIdAsync(int id)
-        {
-            return await _context.Systems
-                .Where(x => x.Id == id)
-                .Select(x => new SystemDTO
-                {
-                    Id = x.Id,
-                    Description = x.Description
-                })
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task<SystemDTO> CreateAsync(SystemDTO dto)
-        {
-            var system = new SystemEntity
+    public async Task<List<SystemDTO>> GetAllAsync()
+    {
+        return await _context.Systems
+            .Select(x => new SystemDTO
             {
-                Description = dto.Description
-            };
+                Id = x.Id,
+                Description = x.Description
+            })
+            .ToListAsync();
+    }
 
-            _context.Systems.Add(system);
-            await _context.SaveChangesAsync();
-
-            return new SystemDTO
+    public async Task<SystemDTO?> GetByIdAsync(int id)
+    {
+        return await _context.Systems
+            .Where(x => x.Id == id)
+            .Select(x => new SystemDTO
             {
-                Id = system.Id,
-                Description = system.Description
-            };
-        }
+                Id = x.Id,
+                Description = x.Description
+            })
+            .FirstOrDefaultAsync();
+    }
 
-        public async Task<bool> UpdateAsync(SystemDTO dto)
+    public async Task<SystemDTO> CreateAsync(SystemDTO dto)
+    {
+        var system = new SystemEntity
         {
-            var system = await _context.Systems.FindAsync(dto.Id);
+            Description = dto.Description
+        };
 
-            if (system == null)
-                return false;
+        _context.Systems.Add(system);
+        await _context.SaveChangesAsync();
 
-            system.Description = dto.Description;
-
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
+        return new SystemDTO
         {
-            var system = await _context.Systems.FindAsync(id);
-            if (system == null)
-                return false;
+            Id = system.Id,
+            Description = system.Description
+        };
+    }
 
-            _context.Systems.Remove(system);
-            await _context.SaveChangesAsync();
+    public async Task<bool> UpdateAsync(SystemDTO dto)
+    {
+        var system = await _context.Systems.FindAsync(dto.Id);
 
-            return true;
-        }
+        if (system == null)
+            return false;
+
+        system.Description = dto.Description;
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var system = await _context.Systems.FindAsync(id);
+        if (system == null)
+            return false;
+
+        _context.Systems.Remove(system);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }

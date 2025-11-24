@@ -19,6 +19,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(cfg => { }, typeof(UserProfile));
 
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<AuthServices>();
 builder.Services.AddScoped<UsersServices>();
 builder.Services.AddScoped<PermissionService>();
 builder.Services.AddScoped<GroupService>();

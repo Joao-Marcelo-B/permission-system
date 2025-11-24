@@ -12,6 +12,9 @@ public class UserProfile : Profile
         .ForMember(dest => dest.Groups,
             opt => opt.MapFrom(src => src.GroupUsers.Select(gu => gu.Group))).ReverseMap();
 
+        CreateMap<UserCreateDTO, User>()
+            .ForMember(dest => dest.GroupUsers, opt => opt.Ignore());
+
         CreateMap<SystemEntity, SystemDTO>().ReverseMap();
         CreateMap<Group, GroupDTO>().ReverseMap();
     }
