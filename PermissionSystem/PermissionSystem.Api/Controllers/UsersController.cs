@@ -76,5 +76,12 @@ public class UsersController : ControllerBase
             return NotFound("Usuário não encontrado.");
 
         return NoContent();
+    } 
+
+    [HttpGet("users-by-system/{id}")]
+    public async Task<IActionResult> GetUsersBySystem(int id)
+    {
+        var users = await _userServices.GetUsersBySystem(id);
+        return Ok(users);
     }
 }

@@ -57,4 +57,12 @@ public class GroupsController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("groups-by-system/{id}")]
+    public async Task<IActionResult> GetGroupsBySystem(int id)
+    {
+        var groups = await _service.GetGroupsBySystem(id);
+        return Ok(groups);
+    }
+
 }

@@ -65,6 +65,13 @@ public class PermissionsController : ControllerBase
         var permissions = await _service.GetPermissionsByUserIdAsync(id);
         return Ok(permissions);
     }
+
+    [HttpGet("permissions-by-system/{id}")]
+    public async Task<IActionResult> GetPermissionsBySystem(int id)
+    {
+        var permissions = await _service.GetPermissionsBySystem(id);
+        return Ok(permissions);
+    }
 }
 
         

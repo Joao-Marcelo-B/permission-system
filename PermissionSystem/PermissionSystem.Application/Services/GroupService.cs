@@ -82,4 +82,10 @@ public class GroupService
 
         return true;
     }
+
+    public async Task<List<Group>> GetGroupsBySystem(int id)
+    {   
+        var groups = await _context.Groups.Where(g => g.SystemId == id).ToListAsync();
+        return groups;
+    }
 }

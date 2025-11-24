@@ -112,4 +112,29 @@ public class PermissionService
 
         return permissionsByUser;
     }
+
+    public async Task<List<Permission>> GetPermissionsBySystem(int id)
+    {
+        List<Permission> listPermissions = new List<Permission>();
+
+        var groups = await _context.Groups.Where(g => g.SystemId == id).ToListAsync();
+        var groupsIds = groups.Select(g => g.Id).ToList();
+
+        var permissionGroups = await _context.PermissionGroups.Where(pg => groupsIds.Contains(pg.GroupId)).ToListAsync();
+        var permissions = await _context.Permissions.ToListAsync();    
+        
+
+        foreach (var permission in permissions)
+        {
+            foreach (var permissionGroup in permissionGroups)
+            {
+                if (permission.Id == permissionGroup.PermissionId)
+                {
+                    listPermissions.Add(permission);
+                }
+            }
+        }
+
+        return listPermissions.Distinct().ToList();
+    }
 }

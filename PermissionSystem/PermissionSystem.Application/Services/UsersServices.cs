@@ -122,4 +122,13 @@ public class UsersServices
         return _mapper.Map<UserDTO>(user);
     }
 
+    public async Task<IEnumerable<UserDTO>> GetUsersBySystem(int id)
+    {
+        var users = await _context.Users.Where(u => u.SystemId == id)
+            .Include(u => u.System)
+            .Include(u => u.GroupUsers!)
+            .ThenInclude(gu => gu.Group).ToListAsync();
+        return _mapper.Map<IEnumerable<UserDTO>>(users);
+    }
+
 }
