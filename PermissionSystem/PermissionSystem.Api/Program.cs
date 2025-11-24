@@ -23,6 +23,7 @@ builder.Services.AddScoped<UsersServices>();
 builder.Services.AddScoped<PermissionService>();
 builder.Services.AddScoped<GroupService>();
 builder.Services.AddScoped<PermissionGroupService>();
+builder.Services.AddScoped<SystemService>();
 
 
 builder.Services.AddEndpointsApiExplorer();

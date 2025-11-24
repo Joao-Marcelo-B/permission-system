@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PermissionSystem.Application.Data.Entities
 {
@@ -13,8 +14,10 @@ namespace PermissionSystem.Application.Data.Entities
         [Required]
         [MaxLength(255)]
         public string Description { get; set; } = string.Empty;
+        [JsonIgnore]
 
         public ICollection<User> Users { get; set; } = new List<User>();
+        [JsonIgnore]
         public ICollection<Group> Groups { get; set; } = new List<Group>();
     }
 }

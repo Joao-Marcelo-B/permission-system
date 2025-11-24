@@ -78,50 +78,38 @@ public class PermissionService
 
         return true;
     }
-}
-            return true;
-        }
 
-        public async Task<List<Permission>> GetPermissionsByUserIdAsync(int userId)
+    public async Task<List<Permission>> GetPermissionsByUserIdAsync(int userId)
+    {
+        var permissionsByUser = new List<Permission>();
+
+        var groupsUser = await _context.GroupUsers
+            .Where(gu => gu.UserId == userId)
+            .ToListAsync();
+
+        if (groupsUser.Count == 0)
+            return permissionsByUser;
+
+        var groups = await _context.Groups.ToListAsync();
+        var validGroups = groups
+            .Where(g => groupsUser.Any(gu => gu.GroupId == g.Id))
+            .ToList();
+
+        var permissions = await _context.Permissions.ToListAsync();
+        var permissionGroups = await _context.PermissionGroups.ToListAsync();
+
+        foreach (var permission in permissions)
         {
-            List<Permission> permissionsByUser = new List<Permission>();
-
-            var groupsUser = await _context.GroupUsers.Where(gu => gu.UserId == userId).ToListAsync();
-
-            if (groupsUser.Count <= 0)
+            foreach (var permissionGroup in permissionGroups)
             {
-                return permissionsByUser;
-            }
-
-            var groups = await _context.Groups.ToListAsync();
-            var validGroups = new List<Group>();
-
-            foreach (var item in groupsUser)
-            {
-                foreach (var group in groups)
+                if (permission.Id == permissionGroup.PermissionId &&
+                    validGroups.Any(vg => vg.Id == permissionGroup.GroupId))
                 {
-                    if (item.GroupId == group.Id)
-                    {
-                        validGroups.Add(group);
-                    }
-                } 
-            }
-
-            var permissions = await _context.Permissions.ToListAsync();
-            var permissionGroups = await _context.PermissionGroups.ToListAsync();
-
-            foreach (var item in permissions)
-            {
-                foreach (var permissionGroup in permissionGroups)
-                {
-                    if (item.Id == permissionGroup.PermissionId)
-                    {
-                        permissionsByUser.Add(item);
-                    }
+                    permissionsByUser.Add(permission);
                 }
             }
-
-            return permissionsByUser;
         }
+
+        return permissionsByUser;
     }
 }

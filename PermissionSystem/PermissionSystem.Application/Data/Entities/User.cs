@@ -1,4 +1,6 @@
-﻿namespace PermissionSystem.Application.Data.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace PermissionSystem.Application.Data.Entities;
 
 public class User
 {
@@ -8,6 +10,8 @@ public class User
     public required string Password { get; set; }
 
     public int SystemId { get; set; }
+    [JsonIgnore]
     public SystemEntity? System { get; set; }
+    [JsonIgnore]
     public ICollection<GroupUser>? GroupUsers { get; set; }
 }
